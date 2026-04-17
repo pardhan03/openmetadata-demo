@@ -6,5 +6,9 @@ models:
       owner: "data-team@company.com"
     tags: [finance]
     columns:
-      - name: customer
+      - name: order_id
+        description: "Primary key"
+        tags: [PK]
+      - name: customer_id
         description: "Customer identifier"
+        tags: [PII]
