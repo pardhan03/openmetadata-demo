@@ -10,5 +10,5 @@ models:
         description: "Primary key"
         tags: [PK]
       - name: customer_id
-        description: "Customer identifier"
+        description: "Contains all customer orders - UPDATED AGAIN"
         tags: [PII]
