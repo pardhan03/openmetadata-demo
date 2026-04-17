@@ -1,22 +1,55 @@
 name: Sync Metadata to OpenMetadata
 
+# on:
+#   pull_request:
+#     paths: ['**.yml', '**.yaml', '**.sql', '**.json']
+
 on:
   pull_request:
-    paths: ['**.yml', '**.yaml', '**.sql', '**.json']
+    paths:
+      - '**.yml'
+      - '**.yaml'
+      - '**.sql'
+      - '**.json'
+
+# jobs:
+#   sync-metadata:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       pull-requests: write
+
+#     steps:
+#       - uses: pardhan03/openmetadata-sync-action@v1
+#         with:
+#           fetch-depth: 0
+
+#       - uses: pardhan03/openmetadata-sync-action@v1
+#         with:
+#           openmetadata_host: ${{ secrets.OPENMETADATA_HOST }}
+#           openmetadata_token: ${{ secrets.OPENMETADATA_TOKEN }}
+#           github_token: ${{ secrets.GITHUB_TOKEN }}
+#           database_service_name: ${{ secrets.OM_SERVICE_NAME }}
+#           schema_path: './models'
+#           post_pr_comment: 'true'
+#           dry_run: 'false'
 
 jobs:
   sync-metadata:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       pull-requests: write
 
     steps:
-      - uses: pardhan03/openmetadata-sync-action@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: pardhan03/openmetadata-sync-action@v1
+      - name: Run OpenMetadata Sync
+        uses: pardhan03/openmetadata-sync-action@v1
         with:
           openmetadata_host: ${{ secrets.OPENMETADATA_HOST }}
           openmetadata_token: ${{ secrets.OPENMETADATA_TOKEN }}

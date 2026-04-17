@@ -1,0 +1,20 @@
+{
+  "table": "orders",
+  "columns": [
+    {
+      "name": "order_id",
+      "type": "integer",
+      "description": "Unique order identifier"
+    },
+    {
+      "name": "customer_id",
+      "type": "integer",
+      "description": "Customer reference ID"
+    },
+    {
+      "name": "order_amount",
+      "type": "number",
+      "description": "Total order value"
+    }
+  ]
+}

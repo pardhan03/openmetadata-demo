@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: customers
+    description: "Contains customer details"
+    meta:
+      owner: "analytics-team@company.com"
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier"
+      - name: email
+        description: "Customer email address"
+        tags:
+          - PII
+      - name: created_at
+        description: "Account creation timestamp"
