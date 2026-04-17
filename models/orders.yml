@@ -8,4 +8,4 @@ models:
     columns:
       - name: customer
         description: "UPDATED: All customer orders with payments"
-        tags: [finance, core]
+        tags: [finance]
