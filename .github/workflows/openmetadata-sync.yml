@@ -23,3 +23,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           database_service_name: ${{ secrets.OM_SERVICE_NAME }}
           schema_path: './models'
+          post_pr_comment: 'true'
+          dry_run: 'false'
