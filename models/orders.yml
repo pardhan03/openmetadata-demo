@@ -1,0 +1,10 @@
+version: 2
+models:
+  - name: orders
+    description: "All customer orders"
+    meta:
+      owner: "data-team@company.com"
+    tags: [finance]
+    columns:
+      - name: customer_id
+        description: "Customer identifier"
