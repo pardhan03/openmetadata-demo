@@ -11,4 +11,6 @@ models:
         tags: [PK]
       - name: customer_id
         description: "Contains all customer orders - UPDATED AGAIN"
-        tags: [PII]
+        tags:
+          - PII
+          - SENSITIVE
