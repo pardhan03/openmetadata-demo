@@ -1,0 +1,155 @@
+instaastro@instaastro-manish:~/Documents$ cd
+instaastro@instaastro-manish:~$ curl -sL https://github.com/open-metadata/OpenMetadata/releases/download/1.6.0-release/docker-compose.yml -o docker-compose.yml
+instaastro@instaastro-manish:~$ docker compose up -d
+WARN[0000] /home/instaastro/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 78/79
+ ✔ Image docker.getcollate.io/openmetadata/db:1.6.0           Pulled                                                                                                                                  75.3ss
+ ✔ Image docker.elastic.co/elasticsearch/elasticsearch:8.11.4 Pulled                                                                                                                                  202.1s
+ ✔ Image docker.getcollate.io/openmetadata/server:1.6.0       Pulled                                                                                                                                  98.9ss
+ ✔ Image docker.getcollate.io/openmetadata/ingestion:1.6.0    Pulled                                                                                                                                  205.4s
+ ✔ Network instaastro_app_net                                 Created                                                                                                                                 0.1s
+ ✔ Volume instaastro_ingestion-volume-dag-airflow             Created                                                                                                                                 0.0s
+ ✔ Volume instaastro_ingestion-volume-dags                    Created                                                                                                                                 0.0s
+ ✔ Volume instaastro_ingestion-volume-tmp                     Created                                                                                                                                 0.0s
+ ✔ Volume instaastro_es-data                                  Created                                                                                                                                 0.0s
+ ✔ Container openmetadata_elasticsearch                       Started                                                                                                                                 1.3s
+ ⠋ Container openmetadata_mysql                               Starting                                                                                                                                1.3s
+ ✔ Container execute_migrate_all                              Created                                                                                                                                 0.1s
+ ✔ Container openmetadata_server                              Created                                                                                                                                 0.1s
+ ✔ Container openmetadata_ingestion                           Created                                                                                                                                 0.1s
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint openmetadata_mysql (62b310447fdfd53df72fff20f984ccb5c5a66a4306e5d6f7346ae81d30dc8e97): failed to bind host port 0.0.0.0:3306/tcp: address already in use
+instaastro@instaastro-manish:~$ docker compose up -d
+WARN[0000] /home/instaastro/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 3/3
+ ✔ Container openmetadata_elasticsearch Healthy                                                                                                                                                        16.3s
+ ✔ Container openmetadata_mysql         Healthy                                                                                                                                                        16.3s
+ ✘ Container execute_migrate_all        Error service "execute-migrate-all" didn't complete successfully: exit 1                                                                                       10.7s
+service "execute-migrate-all" didn't complete successfully: exit 1
+instaastro@instaastro-manish:~$ dockerps
+dockerps: command not found
+instaastro@instaastro-manish:~$ docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS                        PORTS                                                                                      NAMES
+6b9763fe8357   docker.getcollate.io/openmetadata/db:1.6.0             "/entrypoint.sh --so…"   22 minutes ago   Up About a minute (healthy)                                                                                              openmetadata_mysql
+d085fbab28fa   docker.elastic.co/elasticsearch/elasticsearch:8.11.4   "/bin/tini -- /usr/l…"   22 minutes ago   Up 22 minutes (healthy)       0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp, 0.0.0.0:9300->9300/tcp, [::]:9300->9300/tcp   openmetadata_elasticsearch
+instaastro@instaastro-manish:~$ docker logs execute_migrate_all
+   |||||||
+ ||||   ||||      ____
+||||     ||||    / __ \
+||||     ||||   | |  | | _ __    ___  _ __
+|||||   |||||   | |  | || '_ \  / _ \| '_ \
+|||||||||||||   | |__| || |_) ||  __/| | | |
+|||||||||||||    \____/ | .__/  \___||_| |_|
+||| ||||| |||    __  __ | |    _              _         _
+|||  |||  |||   |  \/  ||_|   | |            | |       | |
+|||   |   |||   | \  / |  ___ | |_  __ _   __| |  __ _ | |_  __ _
+|||       |||   | |\/| | / _ \| __|/ _` | / _` | / _` || __|/ _` |
+||| || || |||   | |  | ||  __/| |_| (_| || (_| || (_| || |_| (_| |
+||| ||||| |||   |_|  |_| \___| \__|\__,_| \__,_| \__,_| \__|\__,_|
+ |||||||||||
+   |||||||
+Migrating the OpenMetadata Schema.
+Failed to db migration due to 
+org.flywaydb.core.internal.exception.FlywaySqlException: Unable to obtain connection from database (jdbc:mysql://mysql:3306/openmetadata_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC) for user 'openmetadata_user': Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 08S01
+Error Code : 0
+Message    : Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+
+	at org.flywaydb.core.internal.jdbc.JdbcUtils.openConnection(JdbcUtils.java:60)
+	at org.flywaydb.core.internal.jdbc.JdbcConnectionFactory.<init>(JdbcConnectionFactory.java:74)
+	at org.flywaydb.core.FlywayExecutor.execute(FlywayExecutor.java:142)
+	at org.flywaydb.core.Flyway.migrate(Flyway.java:140)
+	at org.openmetadata.service.util.OpenMetadataOperations.migrate(OpenMetadataOperations.java:236)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at picocli.CommandLine.executeUserObject(CommandLine.java:2070)
+	at picocli.CommandLine.access$1500(CommandLine.java:148)
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2465)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2457)
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2419)
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2277)
+	at picocli.CommandLine$RunLast.execute(CommandLine.java:2421)
+	at picocli.CommandLine.execute(CommandLine.java:2174)
+	at org.openmetadata.service.util.OpenMetadataOperations.main(OpenMetadataOperations.java:732)
+Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:837)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:420)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:238)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180)
+	at org.flywaydb.core.internal.jdbc.DriverDataSource.getConnectionFromDriver(DriverDataSource.java:258)
+	at org.flywaydb.core.internal.jdbc.DriverDataSource.getConnection(DriverDataSource.java:223)
+	at org.flywaydb.core.internal.jdbc.JdbcUtils.openConnection(JdbcUtils.java:48)
+	... 17 common frames omitted
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:142)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:961)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	... 23 common frames omitted
+Caused by: java.net.UnknownHostException: mysql: Try again
+	at java.base/java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.base/java.net.InetAddress$PlatformNameService.lookupAllHostAddr(InetAddress.java:934)
+	at java.base/java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1543)
+	at java.base/java.net.InetAddress$NameServiceAddresses.get(InetAddress.java:852)
+	at java.base/java.net.InetAddress.getAllByName0(InetAddress.java:1533)
+	at java.base/java.net.InetAddress.getAllByName(InetAddress.java:1385)
+	at java.base/java.net.InetAddress.getAllByName(InetAddress.java:1306)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:121)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53)
+	... 26 common frames omitted
+instaastro@instaastro-manish:~$ 
+instaastro@instaastro-manish:~$ docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                  CREATED          STATUS                    PORTS                                                                                      NAMES
+6b9763fe8357   docker.getcollate.io/openmetadata/db:1.6.0             "/entrypoint.sh --so…"   23 minutes ago   Up 2 minutes (healthy)                                                                                               openmetadata_mysql
+d085fbab28fa   docker.elastic.co/elasticsearch/elasticsearch:8.11.4   "/bin/tini -- /usr/l…"   23 minutes ago   Up 23 minutes (healthy)   0.0.0.0:9200->9200/tcp, [::]:9200->9200/tcp, 0.0.0.0:9300->9300/tcp, [::]:9300->9300/tcp   openmetadata_elasticsearch
+instaastro@instaastro-manish:~$ nano docker-compose.yml
+instaastro@instaastro-manish:~$ docker compose down -v
+WARN[0000] /home/instaastro/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] down 10/10
+ ✔ Container openmetadata_ingestion               Removed                                                                                                                                               0.0s
+ ✔ Container openmetadata_server                  Removed                                                                                                                                               0.0s
+ ✔ Container execute_migrate_all                  Removed                                                                                                                                               0.0s
+ ✔ Container openmetadata_mysql                   Removed                                                                                                                                               1.2s
+ ✔ Container openmetadata_elasticsearch           Removed                                                                                                                                               2.7s
+ ✔ Volume instaastro_ingestion-volume-tmp         Removed                                                                                                                                               0.0s
+ ✔ Volume instaastro_ingestion-volume-dag-airflow Removed                                                                                                                                               0.0s
+ ✔ Volume instaastro_ingestion-volume-dags        Removed                                                                                                                                               0.0s
+ ✔ Volume instaastro_es-data                      Removed                                                                                                                                               0.0s
+ ✔ Network instaastro_app_net                     Removed                                                                                                                                               0.1s
+instaastro@instaastro-manish:~$ docker compose up -d
+WARN[0000] /home/instaastro/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] up 10/10
+ ✔ Network instaastro_app_net                     Created                                                                                                                                              0.0ss
+ ✔ Volume instaastro_es-data                      Created                                                                                                                                              0.0ss
+ ✔ Volume instaastro_ingestion-volume-dag-airflow Created                                                                                                                                              0.0ss
+ ✔ Volume instaastro_ingestion-volume-dags        Created                                                                                                                                              0.0ss
+ ✔ Volume instaastro_ingestion-volume-tmp         Created                                                                                                                                              0.0ss
+ ✔ Container mysql                                Healthy                                                                                                                                              86.3s
+ ✔ Container openmetadata_elasticsearch           Healthy                                                                                                                                              16.7s
+ ✔ Container execute_migrate_all                  Exited                                                                                                                                               85.6s
+ ✔ Container openmetadata_server                  Started                                                                                                                                              85.7s
+ ✔ Container openmetadata_ingestion               Started                                                                                                                                              86.3s
+instaastro@instaastro-manish:~$ 
+
+

@@ -7,4 +7,5 @@ models:
     tags: [finance]
     columns:
       - name: customer
-        description: "Customer identifier"
+        description: "UPDATED: All customer orders with payments"
+        tags: [finance]
