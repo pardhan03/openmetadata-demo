@@ -10,7 +10,7 @@ models:
         description: "Primary key"
         tags: [PK]
       - name: customer_id
-        description: "Contains all customer orders - UPDATED AGAIN"
+        description: "Test-5 Again"
         tags:
           - PII
           - SENSITIVE
