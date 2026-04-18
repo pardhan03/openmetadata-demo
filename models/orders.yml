@@ -10,7 +10,7 @@ models:
         description: "Primary key"
         tags: [PK]
       - name: customer_id
-        description: "Test-5 Again"
+        description: "Test-6 Demo Again"
         tags:
           - PII
           - SENSITIVE
